@@ -11,7 +11,7 @@ def cmd_show():
 
 @cmd_show.command('courses')
 @get_params(opts.ARCHIVED)
-def cmd_courses(archived):
+def cmd_courses(archived: bool):
     """Display current or archived course codes.
     """
     if archived:
