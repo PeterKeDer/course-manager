@@ -7,7 +7,7 @@ from course_manager.helpers.config_helper import config_helper, ConfigKeyInvalid
 @click.command('config')
 @get_params(args.CONFIG_NAME, opts.WRITE)
 def cmd_config(config_name: str, write: Optional[str]):
-    """Command for reading/writing configurations.
+    """Read or write configurations.
 
     If <write> is given, it will write its value to the config.
 

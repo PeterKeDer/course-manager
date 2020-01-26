@@ -1,5 +1,6 @@
 import re
 import shutil
+from typing import List, Optional
 import course_manager.helpers.path_helper as paths
 
 ARCHIVED_DIRECTORY = '.course_manager_archived'
@@ -75,3 +76,46 @@ def course_archived(course_code: str) -> bool:
     Precondition: the course code is valid.
     """
     return paths.get_path(ARCHIVED_DIRECTORY, course_code).exists()
+
+
+def get_course_codes() -> List[str]:
+    """Get the list of course codes of existing courses, sorted alphabetically.
+    """
+    return _get_course_codes(paths.get_base_path())
+
+
+def get_archived_course_codes() -> List[str]:
+    """Get the list of course codes of archived courses, sorted alphabetically.
+    """
+    return _get_course_codes(paths.get_path(ARCHIVED_DIRECTORY))
+
+
+def get_all_course_codes() -> List[str]:
+    """Get the sorted list of course codes of all courses, both archive and current."""
+    lst = get_course_codes() + get_archived_course_codes()
+    lst.sort()
+    return lst
+
+
+def _get_course_codes(directory: paths.Path) -> List[str]:
+    """Utility function to get the list containing all course codes in <directory>.
+
+    The returned list is sorted alphabetically.
+    """
+    # Check if the given path is a directory
+    if not directory.is_dir():
+        return []
+
+    def get_code(path: paths.Path) -> Optional[str]:
+        """Get the course code for the directory <path>.
+
+        Return None if it is not a valid course code, or if path is not a directory.
+        """
+        if path.is_dir():
+            code = path.name
+            if code != ARCHIVED_DIRECTORY and is_valid(code):
+                return code
+
+    lst = [code for path in directory.iterdir() if (code := get_code(path)) is not None]
+    lst.sort()
+    return lst
