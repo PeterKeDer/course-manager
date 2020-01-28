@@ -1,3 +1,4 @@
+from typing import Union
 from pathlib import Path
 import course_manager.helpers.config_helper as config_helper
 
@@ -11,7 +12,7 @@ def get_base_path() -> Path:
     return Path(HOME_PATH, config_helper.get_config(config_helper.KEY_BASE_DIRECTORY))
 
 
-def get_path(*paths: str) -> Path:
+def get_path(*paths: Union[str, Path]) -> Path:
     """Get path extended from base directory, with components <paths>.
     """
     return Path(get_base_path(), *paths)

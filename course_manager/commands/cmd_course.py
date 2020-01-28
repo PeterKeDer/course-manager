@@ -1,7 +1,7 @@
 import sys
 import click
 from course_manager.cli import *
-import course_manager.helpers.course_helper as course_helper
+from course_manager.helpers import course_helper
 
 
 @click.group('course')
@@ -74,7 +74,7 @@ def _validate_course_code(course_code: str) -> str:
     If the course code is not valid, display message and exist with status code 1.
     """
     lower = course_code.lower()
-    if not course_helper.is_valid(lower):
+    if not course_helper.course_code_is_valid(lower):
         click.echo(f'The course code "{course_code}" is invalid.\n'
                    'A course code can only contain letters, numbers, or underscores.')
         sys.exit(1)

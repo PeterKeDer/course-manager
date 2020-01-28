@@ -1,6 +1,6 @@
 import click
 from course_manager.cli import *
-import course_manager.helpers.course_helper as course_helper
+from course_manager.helpers import course_helper
 
 
 @click.group('show')

@@ -1,5 +1,5 @@
 import configparser
-import course_manager.helpers.path_helper as paths
+from course_manager.helpers import path_helper
 
 CONFIG_FILE = 'config.ini'
 
@@ -38,7 +38,7 @@ def _initialize_config():
     """Initialize configurations with default values.
     """
     _config['DEFAULT'] = {
-        KEY_BASE_DIRECTORY: paths.DEFAULT_BASE_DIRECTORY,
+        KEY_BASE_DIRECTORY: path_helper.DEFAULT_BASE_DIRECTORY,
     }
     _write_config()
 

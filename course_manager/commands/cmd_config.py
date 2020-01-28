@@ -1,8 +1,7 @@
 import click
 from typing import Optional
 from course_manager.cli import *
-import course_manager.helpers.config_helper as config_helper
-import course_manager.helpers.path_helper as paths
+from course_manager.helpers import config_helper, path_helper
 
 
 @click.command('config')
@@ -39,7 +38,7 @@ def _post_write_handler(config_name: str, prev: str, new: str):
         # Prompt to rename base directory
         if click.confirm('Base directory was changed. '
                          'Do you want to move existing courses to the new directory?'):
-            renamed = paths.rename_base_directory(prev, new)
+            renamed = path_helper.rename_base_directory(prev, new)
             if renamed:
                 click.echo(f'Courses moved from {prev} to {new}!')
             else:
