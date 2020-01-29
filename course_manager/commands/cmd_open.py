@@ -1,5 +1,5 @@
 import click
-from course_manager.cli import *
+from course_manager.cli import get_params, args
 
 
 @click.command('open')

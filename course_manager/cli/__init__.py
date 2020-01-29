@@ -1,5 +1,5 @@
-import course_manager.cli.arguments as args
-import course_manager.cli.options as opts
+from course_manager.cli.repeat_prompt import repeat_prompt, Validator, ValidateResult
+from course_manager.cli import arguments as args, options as opts
 
 
 def get_params(*decorators):
@@ -12,3 +12,6 @@ def get_params(*decorators):
             f = dec(f)
         return f
     return func
+
+
+

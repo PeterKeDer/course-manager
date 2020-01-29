@@ -1,6 +1,6 @@
 import click
 from typing import Optional
-from course_manager.cli import *
+from course_manager.cli import get_params, args, opts
 from course_manager.helpers import config_helper, path_helper
 
 

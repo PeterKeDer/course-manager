@@ -1,5 +1,5 @@
 import click
-from course_manager.cli import *
+from course_manager.cli import get_params, opts
 from course_manager.helpers import course_helper
 
 
