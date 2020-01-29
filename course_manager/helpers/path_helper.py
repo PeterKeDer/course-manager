@@ -6,6 +6,11 @@ HOME_PATH = Path.home()
 DEFAULT_BASE_DIRECTORY = 'courses'
 
 
+def get_home_path(*paths: Union[str, Path]) -> Path:
+    """Get the path from home of the system."""
+    return Path(HOME_PATH, *paths)
+
+
 def get_base_path() -> Path:
     """Get the path to the base directory of courses.
     """

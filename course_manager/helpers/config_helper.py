@@ -1,7 +1,7 @@
 import configparser
 from course_manager.helpers import path_helper
 
-CONFIG_FILE = 'config.ini'
+CONFIG_FILE = '.cm_config.ini'
 
 KEY_BASE_DIRECTORY = 'base_directory'
 
@@ -20,7 +20,7 @@ def _read_config():
 
     If the file does not exist, initialize with default options.
     """
-    data_sets = _config.read(CONFIG_FILE)
+    data_sets = _config.read(path_helper.get_home_path(CONFIG_FILE))
 
     if len(data_sets) == 0:
         # The file does not exist, will initialize with default values
@@ -30,7 +30,7 @@ def _read_config():
 def _write_config():
     """Write configurations to the file.
     """
-    with open(CONFIG_FILE, 'w') as configfile:
+    with open(str(path_helper.get_home_path(CONFIG_FILE)), 'w') as configfile:
         _config.write(configfile)
 
 
