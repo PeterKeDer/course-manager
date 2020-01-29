@@ -79,20 +79,17 @@ def course_archived(course_code: str) -> bool:
 
 
 def get_course_codes() -> List[str]:
-    """Get the list of course codes of existing courses, sorted alphabetically.
-    """
+    """Get the list of course codes of existing courses, sorted alphabetically."""
     return _get_course_codes(path_helper.get_base_path())
 
 
 def get_archived_course_codes() -> List[str]:
-    """Get the list of course codes of archived courses, sorted alphabetically.
-    """
+    """Get the list of course codes of archived courses, sorted alphabetically."""
     return _get_course_codes(path_helper.get_path(ARCHIVED_DIRECTORY))
 
 
 def get_all_course_codes() -> List[str]:
-    """Get the sorted list of course codes of all courses, both archive and current.
-    """
+    """Get the sorted list of course codes of all courses, both archive and current."""
     lst = get_course_codes() + get_archived_course_codes()
     lst.sort()
     return lst

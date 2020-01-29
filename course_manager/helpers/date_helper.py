@@ -28,6 +28,5 @@ def date_from_str(date_str: str, date_format: str = DATE_FORMAT) -> Optional[dat
 
 
 def str_from_date(date: datetime, date_format: str = DATE_FORMAT) -> str:
-    """Return the string representation of <date>, with format <date_format>.
-    """
+    """Return the string representation of <date>, with format <date_format>."""
     return date.strftime(date_format)

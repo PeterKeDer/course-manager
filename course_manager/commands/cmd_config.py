@@ -32,8 +32,7 @@ def cmd_config(config_name: str, write: Optional[str]):
 
 
 def _post_write_handler(config_name: str, prev: str, new: str):
-    """Special handlers for writing certain configurations.
-    """
+    """Special handlers for writing certain configurations."""
     if config_name.lower() == config_helper.KEY_BASE_DIRECTORY and prev != new:
         # Prompt to rename base directory
         if click.confirm('Base directory was changed. '

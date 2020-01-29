@@ -5,15 +5,13 @@ from course_manager.helpers import course_helper
 
 @click.group('show')
 def cmd_show():
-    """Show courses, projects, and more.
-    """
+    """Show courses, projects, and more."""
 
 
 @cmd_show.command('courses')
 @get_params(opts.ARCHIVED)
 def cmd_courses(archived: bool):
-    """Display current or archived course codes.
-    """
+    """Display current or archived course codes."""
     if archived:
         courses = course_helper.get_archived_course_codes()
     else:

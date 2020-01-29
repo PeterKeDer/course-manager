@@ -8,8 +8,7 @@ from course_manager.helpers import course_helper, project_helper, date_helper
 
 @click.group('project')
 def cmd_project():
-    """Create, manage, or remove projects.
-    """
+    """Create, manage, or remove projects."""
 
 
 @cmd_project.command('create')
@@ -40,8 +39,7 @@ def cmd_project_create(course_code: str, template: Optional[str]):
 @cmd_project.command('delete')
 @get_params(args.COURSE_CODE, args.PROJECT_ID)
 def cmd_command_delete(course_code: str, project_id: str):
-    """Delete the project with given course code and project id.
-    """
+    """Delete the project with given course code and project id."""
     _check_project_exists(course_code, project_id)
 
     msg = (f'Are you sure you want to delete project "{project_id}"?\n'
@@ -70,11 +68,9 @@ def _check_project_exists(course_code: str, project_id: str):
 
 
 def _get_project_id_validator(course_code: str):
-    """Get the validator for project id, given <course_code>.
-    """
+    """Get the validator for project id, given <course_code>."""
     def project_id_validator(s: str):
-        """Validator for project id prompt.
-        """
+        """Validator for project id prompt."""
         value: Optional[str]
         is_valid, value, msg = False, None, None
 
@@ -92,8 +88,7 @@ def _get_project_id_validator(course_code: str):
 
 
 def _date_validator(s: str):
-    """Validator for due date prompt.
-    """
+    """Validator for due date prompt."""
     is_valid, res, msg = False, None, None
 
     if s.strip() == '':

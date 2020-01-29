@@ -11,8 +11,7 @@ ALLOWED_CONFIG_KEYS = {
 
 
 class ConfigKeyInvalidError(Exception):
-    """Exception indicating that a config key is invalid.
-    """
+    """Exception indicating that a config key is invalid."""
 
 
 def _read_config():
@@ -28,15 +27,13 @@ def _read_config():
 
 
 def _write_config():
-    """Write configurations to the file.
-    """
+    """Write configurations to the file."""
     with open(str(path_helper.get_home_path(CONFIG_FILE)), 'w') as configfile:
         _config.write(configfile)
 
 
 def _initialize_config():
-    """Initialize configurations with default values.
-    """
+    """Initialize configurations with default values."""
     _config['DEFAULT'] = {
         KEY_BASE_DIRECTORY: path_helper.DEFAULT_BASE_DIRECTORY,
     }

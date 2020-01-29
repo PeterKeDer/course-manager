@@ -39,8 +39,7 @@ class ProjectSettings:
             return None
 
     def to_json(self) -> str:
-        """Convert to json string representation.
-        """
+        """Convert to json string representation."""
         obj = {
             'name': self.name,
             'project_id': self.project_id,

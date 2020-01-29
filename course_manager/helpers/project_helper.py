@@ -18,8 +18,7 @@ def project_id_is_valid(project_id: str) -> bool:
 
 
 def project_exists(course_code: str, project_id: str) -> bool:
-    """Check whether the project with <project_id> exist in course with <course_code>.
-    """
+    """Check whether the project with <project_id> exist in course with <course_code>."""
     return path_helper.get_path(course_code, project_id).is_dir()
 
 

@@ -6,15 +6,13 @@ from course_manager.helpers import course_helper
 
 @click.group('course')
 def cmd_course():
-    """Add, remove, archive, or unarchive courses.
-    """
+    """Add, remove, archive, or unarchive courses."""
 
 
 @cmd_course.command('add')
 @get_params(args.COURSE_CODE)
 def cmd_course_add(course_code: str):
-    """Add a new course.
-    """
+    """Add a new course."""
     course_code = _validate_course_code(course_code)
 
     if course_helper.course_exists(course_code):
@@ -28,8 +26,7 @@ def cmd_course_add(course_code: str):
 @cmd_course.command('remove')
 @get_params(args.COURSE_CODE)
 def cmd_course_remove(course_code: str):
-    """Remove a course.
-    """
+    """Remove a course."""
     course_code = _validate_course_code(course_code)
     _check_course_exists(course_code)
 
@@ -47,8 +44,7 @@ def cmd_course_remove(course_code: str):
 @cmd_course.command('archive')
 @get_params(args.COURSE_CODE)
 def cmd_course_archive(course_code: str):
-    """Move a course into archive folder.
-    """
+    """Move a course into archive folder."""
     course_code = _validate_course_code(course_code)
     _check_course_exists(course_code)
 
@@ -59,8 +55,7 @@ def cmd_course_archive(course_code: str):
 @cmd_course.command('unarchive')
 @get_params(args.COURSE_CODE)
 def cmd_course_unarchive(course_code: str):
-    """Move an archived course back into courses.
-    """
+    """Move an archived course back into courses."""
     course_code = _validate_course_code(course_code)
     _check_course_archived(course_code)
 

@@ -12,14 +12,12 @@ def get_home_path(*paths: Union[str, Path]) -> Path:
 
 
 def get_base_path() -> Path:
-    """Get the path to the base directory of courses.
-    """
+    """Get the path to the base directory of courses."""
     return Path(HOME_PATH, config_helper.get_config(config_helper.KEY_BASE_DIRECTORY))
 
 
 def get_path(*paths: Union[str, Path]) -> Path:
-    """Get path extended from base directory, with components <paths>.
-    """
+    """Get path extended from base directory, with components <paths>."""
     return Path(get_base_path(), *paths)
 
 
