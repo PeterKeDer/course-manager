@@ -19,15 +19,8 @@ def project_id_is_valid(project_id: str) -> bool:
 
 def project_exists(course_code: str, project_id: str) -> bool:
     """Check whether the project with <project_id> exist in course with <course_code>.
-
-    Precondition: the course with <course_code> exists
     """
-    for path in path_helper.get_path(course_code).iterdir():
-        # Check if the path is a directory and has same name as project id
-        if path.name == project_id and path.is_dir():
-            return True
-
-    return False
+    return path_helper.get_path(course_code, project_id).is_dir()
 
 
 def create_project(course_code: str, settings: ProjectSettings):

@@ -65,7 +65,7 @@ def _check_project_exists(course_code: str, project_id: str):
         sys.exit(1)
 
     if not project_helper.project_exists(course_code, project_id):
-        click.echo(f'The project with id "{project_id} does not exist in "{course_code}"."')
+        click.echo(f'The project with id "{project_id} does not exist in "{course_code}".')
         sys.exit(1)
 
 
