@@ -1,6 +1,6 @@
 import re
 import shutil
-from typing import Optional
+from typing import Optional, List
 from course_manager.models.project_settings import ProjectSettings
 from course_manager.helpers import path_helper
 
@@ -20,6 +20,20 @@ def project_id_is_valid(project_id: str) -> bool:
 def project_exists(course_code: str, project_id: str) -> bool:
     """Check whether the project with <project_id> exist in course with <course_code>."""
     return path_helper.get_path(course_code, project_id).is_dir()
+
+
+def get_project_ids(course_code: str) -> List[str]:
+    """Return the list of ids of the course's projects.
+
+    Precondition: the course with <course_code> exists.
+    """
+    project_ids = []
+
+    for path in path_helper.get_path(course_code).iterdir():
+        if path.is_dir():
+            project_ids.append(path.name)
+
+    return project_ids
 
 
 def create_project(course_code: str, settings: ProjectSettings):
