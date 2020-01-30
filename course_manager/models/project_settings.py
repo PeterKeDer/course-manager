@@ -11,9 +11,10 @@ class ProjectSettings:
     name: str
     project_id: str
     due_date: Optional[datetime]
-    open_method: str
+    open_method: Optional[str]
 
-    def __init__(self, name: str, project_id: str, due_date: Optional[datetime], open_method: str):
+    def __init__(self, name: str, project_id: str, due_date: Optional[datetime],
+                 open_method: Optional[str]):
         self.name = name
         self.project_id = project_id
         self.due_date = due_date
@@ -33,7 +34,12 @@ class ProjectSettings:
             except KeyError:
                 due_date = None
 
-            return ProjectSettings(obj['name'], obj['project_id'], due_date, obj['open_method'])
+            try:
+                open_method = obj['open_method']
+            except KeyError:
+                open_method = None
+
+            return ProjectSettings(obj['name'], obj['project_id'], due_date, open_method)
 
         except (json.decoder.JSONDecodeError, KeyError):
             return None
@@ -43,10 +49,12 @@ class ProjectSettings:
         obj = {
             'name': self.name,
             'project_id': self.project_id,
-            'open_method': self.open_method,
         }
 
         if self.due_date is not None:
             obj['due_date'] = date_helper.str_from_date(self.due_date)
+
+        if self.open_method is not None:
+            obj['open_method'] = self.open_method
 
         return json.dumps(obj)
