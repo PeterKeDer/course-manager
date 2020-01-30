@@ -4,6 +4,8 @@ from typing import Optional
 from course_manager.cli import get_params, args, opts
 from course_manager.helpers import course_helper, project_helper, date_helper
 
+MAX_TITLE_CHAR = 18
+
 
 @click.command('show')
 @get_params(opts.ARCHIVED, args.COURSE_CODE_OPTIONAL, args.PROJECT_ID_OPTIONAL)
@@ -31,7 +33,6 @@ def _show_all_courses(archived: bool):
 
     If archived is True, show archived courses instead.
     """
-    # TODO: show more than just course codes
     if archived:
         courses = course_helper.get_archived_course_codes()
     else:
@@ -44,8 +45,8 @@ def _show_all_courses(archived: bool):
             click.echo('There are currently no courses.')
     else:
         for course_code in courses:
-            click.echo('=' * 20)
             _show_course(course_code)
+            click.echo()
 
 
 def _show_course(course_code: str):
@@ -57,11 +58,15 @@ def _show_course(course_code: str):
         click.echo(f'The course with code "{course_code}" does not exist.')
         sys.exit(1)
 
-    click.echo(f'Course: {course_code}')
-    click.echo('Projects:')
+    _echo_styled_str('Course', course_code)
 
-    for project_id in project_helper.get_project_ids(course_code):
-        click.echo(f'- {project_id}')
+    project_ids = project_helper.get_project_ids(course_code)
+    if len(project_ids) == 0:
+        _echo_styled_str('Projects', 'No projects')
+    else:
+        _echo_styled_str('Projects')
+        for project_id in project_ids:
+            click.echo(f'- {project_id}')
 
     # TODO: show due dates?
     # TODO: add templates here after implementing
@@ -69,8 +74,6 @@ def _show_course(course_code: str):
 
 def _show_project(course_code: str, project_id: str):
     """Show info related to project with <project_id> from course with <course_code>."""
-    click.echo(f'{course_code}: {project_id}')
-
     if not course_helper.course_exists(course_code):
         click.echo(f'The course with code "{course_code}" does not exist.')
         sys.exit(1)
@@ -86,13 +89,22 @@ def _show_project(course_code: str, project_id: str):
                    'The file could have invalid format or does not exist.')
         sys.exit(1)
 
-    click.echo(f'Project id: {project_id}')
-    click.echo(f'Name: {settings.name}')
+    _echo_styled_str('Project id', project_id)
+    _echo_styled_str('Name', settings.name)
 
     if settings.due_date is not None:
         date_str = date_helper.str_from_date(settings.due_date)
-        click.echo(f'Due date: {date_str}')
+        _echo_styled_str('Due date', date_str)
 
     if settings.open_method is not None:
-        click.echo(f'Open method: "{settings.open_method}"')
+        _echo_styled_str('Open method', settings.open_method)
 
+
+def _style_title(title: str) -> str:
+    """Return the styled string for <title>."""
+    return click.style(title, bold=True)
+
+
+def _echo_styled_str(title: str, value: str = ''):
+    """Echo the styled string of <title> and <value>."""
+    click.echo(_style_title(f'{title}: '.ljust(MAX_TITLE_CHAR)) + value)
