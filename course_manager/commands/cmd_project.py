@@ -4,6 +4,7 @@ from typing import Optional
 from course_manager.cli import get_params, args, opts, repeat_prompt
 from course_manager.models.project_settings import ProjectSettings
 from course_manager.helpers import course_helper, project_helper, date_helper
+from course_manager.constants import MAX_PROJECT_NAME_CHARS, MAX_PROJECT_ID_CHARS
 
 
 @click.group('project')
@@ -24,7 +25,7 @@ def cmd_project_create(course_code: str, template: Optional[str]):
 
     # TODO: Should adjust based on template?
     project_id = repeat_prompt('Project id', _get_project_id_validator(course_code))
-    name = click.prompt('Name', default=project_id, type=str)
+    name = repeat_prompt('Name', _project_name_validator, default=project_id)
     due_date = repeat_prompt('Due date', _date_validator)
     open_method = click.prompt('Open method', default='open .', type=str)
 
@@ -76,7 +77,8 @@ def _get_project_id_validator(course_code: str):
 
         if not project_helper.project_id_is_valid(s):
             msg = ('The project id is invalid.\n'
-                   'A project id can only contain letters, numbers, or underscores.')
+                   'A project id can only contain letters, numbers, or underscores with at most'
+                   f'{MAX_PROJECT_ID_CHARS} characters.')
         elif project_helper.project_exists(course_code, s):
             msg = f'The project with id "{s}" already exists in "{course_code}".'
         else:
@@ -85,6 +87,20 @@ def _get_project_id_validator(course_code: str):
         return is_valid, value, msg
 
     return project_id_validator
+
+
+def _project_name_validator(s: str):
+    """Validator for project name prompt."""
+    value: Optional[str]
+    is_valid, value, msg = False, None, None
+
+    if not project_helper.project_name_is_valid(s):
+        msg = ('The project name is invalid.\n'
+               f'A project name must have between 1 and {MAX_PROJECT_ID_CHARS} characters.')
+    else:
+        is_valid, value = True, s
+
+    return is_valid, value, msg
 
 
 def _date_validator(s: str):

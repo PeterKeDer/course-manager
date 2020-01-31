@@ -2,6 +2,7 @@ import re
 import shutil
 from typing import List, Optional
 from course_manager.helpers import path_helper
+from course_manager.constants import MAX_COURSE_CODE_CHARS
 
 ARCHIVED_DIRECTORY = '.course_manager_archived'
 
@@ -13,8 +14,10 @@ def course_code_is_valid(course_code: str) -> bool:
     - has length of at least 1
     - contains only letters, digits, and underscores
     - is lowercase
+    - has at most MAX_COURSE_CODE_CHARS characters
     """
-    return re.match(r'^[a-z0-9_]+$', course_code) is not None
+    return (re.match(r'^[a-z0-9_]+$', course_code) is not None
+            and len(course_code) <= MAX_COURSE_CODE_CHARS)
 
 
 def add_course(course_code: str):

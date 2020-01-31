@@ -20,6 +20,7 @@ def cmd_show(archived: bool, course_code: Optional[str], project_id: Optional[st
 
     - course_code and project_id: show info related to specific project from course
     """
+    # TODO: add more options, such as filter by date
     if course_code is None:
         _show_all_courses(archived)
     elif project_id is None:
@@ -68,7 +69,6 @@ def _show_course(course_code: str):
         for project_id in project_ids:
             click.echo(f'- {project_id}')
 
-    # TODO: show due dates?
     # TODO: add templates here after implementing
 
 

@@ -1,5 +1,6 @@
 from course_manager.cli.repeat_prompt import repeat_prompt, Validator, ValidateResult
 from course_manager.cli import arguments as args, options as opts
+from course_manager.cli import colors
 
 
 def get_params(*decorators):

@@ -3,6 +3,7 @@ import shutil
 from typing import Optional, List
 from course_manager.models.project_settings import ProjectSettings
 from course_manager.helpers import path_helper
+from course_manager.constants import MAX_PROJECT_ID_CHARS, MAX_PROJECT_NAME_CHARS
 
 PROJECT_SETTINGS_FILE = '.cm_project_settings'
 
@@ -11,10 +12,16 @@ def project_id_is_valid(project_id: str) -> bool:
     """Return True iff the <project_id> is a valid project id.
 
     A valid project id:
-    - has length of at least 1
+    - has length between 1 and MAX_PROJECT_ID_CHARS
     - contains only letters, digits, and underscores
     """
-    return re.match(r'^\w+$', project_id) is not None
+    return (re.match(r'^\w+$', project_id) is not None
+            and len(project_id) <= MAX_PROJECT_ID_CHARS)
+
+
+def project_name_is_valid(project_name: str) -> bool:
+    """Return True iff the <project_name> has length between 1 and MAX_PROJECT_NAME_CHARS."""
+    return 1 <= len(project_name) <= MAX_PROJECT_NAME_CHARS
 
 
 def project_exists(course_code: str, project_id: str) -> bool:
