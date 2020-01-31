@@ -3,7 +3,7 @@ import click
 from typing import Optional
 from course_manager.cli import get_params, args, opts, repeat_prompt
 from course_manager.models.project_settings import ProjectSettings
-from course_manager.helpers import course_helper, project_helper, date_helper
+from course_manager.helpers import course_helper, project_helper, date_helper, readable_date_parser
 from course_manager.constants import MAX_PROJECT_NAME_CHARS, MAX_PROJECT_ID_CHARS
 
 
@@ -96,7 +96,7 @@ def _project_name_validator(s: str):
 
     if not project_helper.project_name_is_valid(s):
         msg = ('The project name is invalid.\n'
-               f'A project name must have between 1 and {MAX_PROJECT_ID_CHARS} characters.')
+               f'A project name must have between 1 and {MAX_PROJECT_NAME_CHARS} characters.')
     else:
         is_valid, value = True, s
 
@@ -111,8 +111,11 @@ def _date_validator(s: str):
         is_valid, res = True, None
     elif (date := date_helper.parse_date(s)) is not None:
         is_valid, res = True, date
+    elif (date := readable_date_parser.parse(s)) is not None:
+        is_valid, res = True, date
     else:
-        msg = ('Please enter a date with format "yyyy-MM-dd" or "yyyy-MM-dd HH:mm:ss".\n'
+        msg = ('Please enter a date with one of the common formats, such as "YYYY-MM-DD".\n'
+               'Or use a readable format such as "next Monday at 5pm", "tmr", etc.\n'
                'Leave blank to not set a due date.')
 
     return is_valid, res, msg

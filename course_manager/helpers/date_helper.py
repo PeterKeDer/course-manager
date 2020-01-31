@@ -1,5 +1,6 @@
 from typing import Optional
-from datetime import datetime
+from datetime import datetime, date
+from dateutil.parser import parse, ParserError
 
 DATE_FORMAT_FULL = '%Y-%m-%d %H:%M:%S'
 DATE_FORMAT_DATE_TIME = '%Y-%m-%d %H:%M'
@@ -12,10 +13,10 @@ def parse_date(date_str: str) -> Optional[datetime]:
 
     Return None if none of the formats match.
     """
-    for date_format in [DATE_FORMAT_FULL, DATE_FORMAT_DATE_TIME, DATE_FORMAT_DATE]:
-        if (date := date_from_str(date_str, date_format)) is not None:
-            return date
-    return None
+    try:
+        return parse(date_str)
+    except ParserError:
+        return None
 
 
 def date_from_str(date_str: str, date_format: str = DATE_FORMAT_FULL) -> Optional[datetime]:
@@ -29,11 +30,11 @@ def date_from_str(date_str: str, date_format: str = DATE_FORMAT_FULL) -> Optiona
         return None
 
 
-def str_from_date(date: datetime, date_format: str = DATE_FORMAT_FULL) -> str:
+def str_from_date(date_obj: datetime, date_format: str = DATE_FORMAT_FULL) -> str:
     """Return the string representation of <date>, with format <date_format>."""
-    return date.strftime(date_format)
+    return date_obj.strftime(date_format)
 
 
-def is_today(date: datetime) -> bool:
+def is_today(date_obj: datetime) -> bool:
     """Return True iff date is today."""
-    return date.date() == datetime.today().date()
+    return date_obj.date() == date.today()
