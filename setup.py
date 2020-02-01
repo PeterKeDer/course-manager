@@ -5,7 +5,8 @@ setup(
     version='0.1',
     packages=['course_manager'],
     install_requires=[
-        'Click'
+        'Click',
+        'python-dateutil',
     ],
     entry_points={
         'console_scripts': [

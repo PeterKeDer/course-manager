@@ -1,2 +1,2 @@
 Click==7.0
-python-dateutil
+python-dateutil==2.8.1
