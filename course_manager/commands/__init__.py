@@ -1,5 +1,6 @@
 from course_manager.commands import (
-    cmd_config, cmd_course, cmd_open, cmd_project, cmd_schedule, cmd_show
+    cmd_config, cmd_course, cmd_open, cmd_project, cmd_schedule, cmd_show,
+    cmd_template
 )
 
 commands = [
@@ -9,4 +10,5 @@ commands = [
     cmd_project.cmd_project,
     cmd_schedule.cmd_schedule,
     cmd_show.cmd_show,
+    cmd_template.cmd_template,
 ]

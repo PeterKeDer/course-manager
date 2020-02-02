@@ -2,6 +2,7 @@ import sys
 import click
 from course_manager.cli import get_params, args
 from course_manager.helpers import course_helper
+from course_manager.commands.common import check_course_exists
 
 
 @click.group('course')
@@ -28,7 +29,7 @@ def cmd_course_add(course_code: str):
 def cmd_course_remove(course_code: str):
     """Remove a course."""
     course_code = _validate_course_code(course_code)
-    _check_course_exists(course_code)
+    check_course_exists(course_code)
 
     msg = (f'Are you sure you want to remove "{course_code}"?\n'
            'All of its contents will be permanently deleted and cannot be restored.\n')
@@ -46,7 +47,7 @@ def cmd_course_remove(course_code: str):
 def cmd_course_archive(course_code: str):
     """Move a course into archive folder."""
     course_code = _validate_course_code(course_code)
-    _check_course_exists(course_code)
+    check_course_exists(course_code)
 
     course_helper.archive_course(course_code)
     click.echo(f'The course with code {course_code} is moved into archive.')
@@ -74,16 +75,6 @@ def _validate_course_code(course_code: str) -> str:
                    'A course code can only contain letters, numbers, or underscores.')
         sys.exit(1)
     return lower
-
-
-def _check_course_exists(course_code: str):
-    """Check that the course with <course_code> exist.
-
-    If it does not exist, display message and exit with status code 1.
-    """
-    if not course_helper.course_exists(course_code):
-        click.echo(f'The course with code "{course_code}" does not exist.')
-        sys.exit(1)
 
 
 def _check_course_archived(course_code: str):

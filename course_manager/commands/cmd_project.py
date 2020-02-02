@@ -5,6 +5,7 @@ from course_manager.cli import get_params, args, opts, repeat_prompt
 from course_manager.models.project_settings import ProjectSettings
 from course_manager.helpers import course_helper, project_helper, date_helper, readable_date_parser
 from course_manager.constants import MAX_PROJECT_NAME_CHARS, MAX_PROJECT_ID_CHARS
+from course_manager.commands.common import check_course_exists
 
 
 @click.group('project')
@@ -19,9 +20,7 @@ def cmd_project_create(course_code: str, template: Optional[str]):
 
     If template is given, will create the project with template.
     """
-    if not course_helper.course_exists(course_code):
-        click.echo(f'The course with code "{course_code}" does not exist.')
-        sys.exit(1)
+    check_course_exists(course_code)
 
     # TODO: Should adjust based on template?
     project_id = repeat_prompt('Project id', _get_project_id_validator(course_code))
@@ -59,9 +58,7 @@ def _check_project_exists(course_code: str, project_id: str):
 
     If either is False, then display message and exit with status code 1.
     """
-    if not course_helper.course_exists(course_code):
-        click.echo(f'The course with code "{course_code}" does not exist.')
-        sys.exit(1)
+    check_course_exists(course_code)
 
     if not project_helper.project_exists(course_code, project_id):
         click.echo(f'The project with id "{project_id} does not exist in "{course_code}".')

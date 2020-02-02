@@ -69,6 +69,12 @@ def _get_project_str(project: ScheduleProject, course_color: Optional[str] = Non
                          bold=True, fg=course_color)
     project_id = f'({project.project_id})'.ljust(constants.MAX_PROJECT_ID_CHARS + 2)
     project_name = project.name.ljust(constants.MAX_PROJECT_NAME_CHARS)
-    due_time = (project.due_time or '').ljust(constants.MAX_DUE_TIME_CHARS + 1)
+
+    # Hide times at 00:00 or those that don't exist
+    if project.due_time == '00:00' or project.due_time is None:
+        due_time = ''
+    else:
+        due_time = project.due_time
+    due_time = due_time.ljust(constants.MAX_DUE_TIME_CHARS + 1)
 
     return f'{prefix}{due_time}{course} {project_name} {project_id}'
