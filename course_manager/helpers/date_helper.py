@@ -1,6 +1,6 @@
 from typing import Optional
 from datetime import datetime, date
-from dateutil.parser import parse, ParserError
+from dateutil.parser import parse
 
 DATE_FORMAT_FULL = '%Y-%m-%d %H:%M:%S'
 DATE_FORMAT_DATE_TIME = '%Y-%m-%d %H:%M'
@@ -15,7 +15,7 @@ def parse_date(date_str: str) -> Optional[datetime]:
     """
     try:
         return parse(date_str)
-    except ParserError:
+    except ValueError:
         return None
 
 

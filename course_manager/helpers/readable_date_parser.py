@@ -1,5 +1,5 @@
 import re
-from typing import Optional
+from typing import cast, Optional
 from datetime import datetime, date, time
 from dateutil.relativedelta import relativedelta, MO, TU, WE, TH, FR, SA, SU
 
@@ -81,7 +81,16 @@ def _parse_readable_date_specifier(phrase: str) -> Optional[date]:
                 return date.today() + relativedelta(days=+1)
             elif pattern == NEXT_DATE_PATTERN:
                 specifier = match.group(1)
-                return date.today() + _get_delta(1, specifier)
+                start_date = date.today()
+
+                # Set start date to start of month/year if necessary
+                if specifier == 'month':
+                    start_date = start_date.replace(day=1)
+                elif specifier == 'year':
+                    start_date = start_date.replace(day=1, month=1)
+
+                return start_date + _get_delta(1, specifier)
+
             elif pattern == NEXT_WEEKDAY_PATTERN:
                 weekday = _get_weekday(match.group(1))
                 # Get the next weekday that is not today
@@ -113,22 +122,24 @@ def _parse_readable_time_specifier(phrase: str) -> Optional[time]:
             elif pattern == HH_MM_PATTERN:
                 hour = int(match.group(1))
                 minute = int(match.group(3) or '0')
+
                 if match.group(4) == 'pm' and hour < 12:
                     # Note 12 pm hour is also 12
                     return time(hour + 12, minute)
+
                 return time(hour, minute)
+
             elif pattern == NOW_PATTERN:
                 return datetime.now().time()
             elif pattern == IN_X_TIME_PATTERN:
                 n = int(match.group(1))
                 specifier = match.group(2)
-                return (datetime.now() + _get_delta(n, specifier)).time()
-    return None
+                return cast(datetime, datetime.now() + _get_delta(n, specifier)).time()
 
 
 def _get_delta(n: int, specifier: str) -> relativedelta:
     """Return the time delta representing n times specifiers amount of time."""
-    # Note: the 'specifier' is import to have s at the end
+    # Note: the keyword argument passed into `relativedelta` is important to have s at the end
     # If not, it will set that component to n instead of incrementing
     if specifier == 'min' or specifier == 'minute':
         return relativedelta(minutes=n)
@@ -142,7 +153,8 @@ def _get_delta(n: int, specifier: str) -> relativedelta:
         return relativedelta(months=n)
     elif specifier == 'year':
         return relativedelta(years=n)
-    return relativedelta()
+    else:
+        return relativedelta()
 
 
 def _get_weekday(weekday_str: str) -> int:
