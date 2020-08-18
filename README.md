@@ -4,10 +4,15 @@ A CLI application to manage university projects and assignments. Command line pa
 
 ### Usage (Development)
 
-📦 Ensure you are in a virtualenv and install the package
+📦 Ensure that `virtualenv` is installed on your system. Create a new virtual environment by running:
 ```sh
-source venv/bin/activate
-pip install --editable .
+virtualenv env
+```
+
+Activate the environment and install the packages:
+```sh
+source env/bin/activate
+pip3 install --editable .
 ```
 
 🏃 To run the script
@@ -17,7 +22,7 @@ cm <args>
 
 🏃 Alternatively, simply run the package by
 ```sh
-python -m course_manager <args>
+python3 -m course_manager <args>
 ```
 
 For more info about click and setuptools, check out [this page](https://click.palletsprojects.com/en/7.x/setuptools/).

@@ -31,7 +31,7 @@ def cmd_schedule(course_codes: List[str]):
     # TODO: consider adding color in separate course settings
 
     # Get a random color for each course
-    course_colors = colors.get_random_colors(len(courses))
+    course_colors = colors.get_colors(len(courses))
     course_to_color = {}
     for i in range(len(courses)):
         course_to_color[courses[i]] = course_colors[i]
