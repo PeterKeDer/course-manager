@@ -62,12 +62,8 @@ def _show_course(course_code: str):
     _echo_styled_str('Course', course_code)
 
     project_ids = project_helper.get_project_ids(course_code)
-    if len(project_ids) == 0:
-        _echo_styled_str('Projects', 'No projects')
-    else:
-        _echo_styled_str('Projects')
-        for project_id in project_ids:
-            click.echo(f'- {project_id}')
+    project_str = 'No projects' if not project_ids else ', '.join(project_ids)
+    _echo_styled_str('Projects', project_str)
 
     # TODO: add templates here after implementing
 

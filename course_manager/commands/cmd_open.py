@@ -1,3 +1,4 @@
+from course_manager.commands.common import check_project_exists
 import os
 import click
 from typing import Optional
@@ -16,7 +17,9 @@ def cmd_open(course_code: str, project_id: Optional[str], file: Optional[str]):
         # Open course
         path = str(path_helper.get_path(course_code))
         os.system(f'open "{path}"')
-    elif project_helper.project_exists(course_code, project_id):
+    else:
+        check_project_exists(course_code, project_id)
+
         if file is None:
             # Open project with open_method in settings
             # If not set or error reading settings, default to open by path
@@ -31,7 +34,3 @@ def cmd_open(course_code: str, project_id: Optional[str], file: Optional[str]):
         else:
             path = str(path_helper.get_path(course_code, project_id, file))
             os.system(f'open "{path}"')
-    else:
-        # Project does not exist
-        click.echo(f'The project with id "{project_id}" does not exist'
-                   f'for the course "{course_code}".')
