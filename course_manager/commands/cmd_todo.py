@@ -1,3 +1,5 @@
+import sys
+from course_manager.helpers.todo_helper import TodoScope
 import click
 from typing import Optional
 from course_manager.cli import get_params, args, repeat_prompt, date_validator
@@ -26,17 +28,22 @@ def cmd_todo_add(course_code: Optional[str], project_id: Optional[str]):
 
     item = TodoItem(title, description, False, due_date, priority)
 
-    todo_helper.add_todo_item(item, scope)
+    todo_helper.add_todo_item(scope, item)
 
 
 @cmd_todo.command('mark')
-def cmd_todo_mark():
+@get_params(args.COURSE_CODE_OPTIONAL, args.PROJECT_ID_OPTIONAL)
+def cmd_todo_mark(course_code: Optional[str], project_id: Optional[str]):
     """Mark a todo item as complete or incomplete."""
 
 
 @cmd_todo.command('remove')
-def cmd_todo_remove():
+@get_params(args.TODO_INDEX, args.COURSE_CODE_OPTIONAL, args.PROJECT_ID_OPTIONAL)
+def cmd_todo_remove(todo_index: int, course_code: Optional[str], project_id: Optional[str]):
     """Remove a todo item."""
+    scope = _get_todo_scope(course_code, project_id)
+    _check_todo_index(todo_index, scope)
+    todo_helper.remove_todo_item(scope, todo_index)
 
 
 def _get_todo_scope(course_code: Optional[str], project_id: Optional[str]) -> todo_helper.TodoScope:
@@ -55,3 +62,18 @@ def _get_todo_scope(course_code: Optional[str], project_id: Optional[str]) -> to
             scope = (course_code, project_id)
 
     return scope
+
+
+def _check_todo_index(todo_index: int, scope: TodoScope):
+    """Check that the <todo_index> is valid for given <scope>.
+
+    If it is not valid, display a message and exit with status code 1.
+    """
+    num_items = len(todo_helper.get_todo_items(scope))
+
+    if not 0 <= todo_index < num_items:
+        if num_items == 0:
+            click.echo('There are no todo items to remove.')
+        else:
+            click.echo(f'Invalid index, enter a number between 0 and {num_items - 1}.')
+        sys.exit(1)
